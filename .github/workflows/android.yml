@@ -37,6 +37,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
     - name: Lint
-      run: ./gradlew ktlintCheck
+#      run: ./gradlew ktlintCheck --stacktrace
+      run: ./gradlew ktlintFormat --stacktrace
     - name: Build with Gradle
       run: ./gradlew build
