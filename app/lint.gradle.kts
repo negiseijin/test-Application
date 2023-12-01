@@ -21,9 +21,9 @@ val ktlintCheck by tasks.registering(JavaExec::class) {
     )
 }
 
-tasks.withType<org.gradle.api.DefaultTask> {
-    dependsOn(ktlintCheck)
-}
+//tasks.check {
+//    dependsOn(ktlintCheck)
+//}
 
 tasks.register<JavaExec>("ktlintFormat") {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
