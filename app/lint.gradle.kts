@@ -1,7 +1,7 @@
 val ktlint by configurations.creating
 
 dependencies {
-    ktlint("com.pinterest.ktlint:ktlint-cli:1.0.1") {
+    ktlint("com.pinterest.ktlint:ktlint-cli:${libs.versions.ktlint.get()}") {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
@@ -21,7 +21,7 @@ val ktlintCheck by tasks.registering(JavaExec::class) {
     )
 }
 
-tasks.check {
+tasks.withType<org.gradle.api.DefaultTask> {
     dependsOn(ktlintCheck)
 }
 

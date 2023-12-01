@@ -67,3 +67,5 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }
+
+apply(from = "${projectDir}/lint.gradle.kts")
