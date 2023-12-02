@@ -36,9 +36,9 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-    - name: KtLint
-      run: ./gradlew ktlintCheck --stacktrace
     - name: Lint
-      run: ./gradlew lint
+      run: |
+        ./gradlew ktlintCheck
+        ./gradlew lint
     - name: Build with Gradle
       run: ./gradlew build
