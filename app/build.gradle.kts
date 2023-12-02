@@ -26,7 +26,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -68,4 +68,4 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 }
 
-apply(from = "${projectDir}/lint.gradle.kts")
+apply(from = "${projectDir }/lint.gradle.kts")
