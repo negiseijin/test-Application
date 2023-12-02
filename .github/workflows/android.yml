@@ -8,6 +8,10 @@ on:
     branches: 
       - develop
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
 
@@ -32,5 +36,9 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
+    - name: Lint
+      run: |
+        ./gradlew ktlintCheck
+        ./gradlew lint
     - name: Build with Gradle
-      run: ./gradlew build --no-daemon
+      run: ./gradlew build
