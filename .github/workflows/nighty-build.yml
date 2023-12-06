@@ -39,7 +39,8 @@ jobs:
                   git push origin -u feature/example
 
             - name: Create pr
-              run: gh pr create -B "develop" \
+              run: |
+                  gh pr create -B "develop" \
                   -t "Nighty Build" \
                   -b "Nighty Build"
               env:
