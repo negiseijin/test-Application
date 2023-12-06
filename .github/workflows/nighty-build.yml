@@ -45,9 +45,10 @@ jobs:
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Create pr
               run: |
+                  pr_list=$(gh pr list --json number | jq '[.[].number]')
                   gh pr create -B "develop" \
                   -t "Nighty Build" \
-                  -b "Nighty Build ${{ steps.date.outputs.date }}"
+                  -b "Nighty Build ${pr_list}"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
