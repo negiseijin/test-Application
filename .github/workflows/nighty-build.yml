@@ -31,12 +31,6 @@ jobs:
             - uses: actions/checkout@v4
               with:
                   path: develop
-            - name: Get Date
-              id: date
-              run: |
-                  name=date
-                  value="$(date +'%Y-%m-%d')"
-                  echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Print date
               run: |
                   date > generated.txt
@@ -46,6 +40,12 @@ jobs:
                   git add .
                   git commit -m "Nighty Build"
                   git push origin -u feature/example
+            # - name: Get Date
+            #   id: date
+            #   run: |
+            #       name=date
+            #       value="$(date +'%Y-%m-%d')"
+            #       echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Get pr list
               id: pr
               run: |
