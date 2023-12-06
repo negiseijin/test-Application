@@ -37,20 +37,20 @@ jobs:
                   git add .
                   git commit -m "Nighty Build"
                   git push origin -u feature/example
+            - name: Get Date
+              id: date
+              run: |
+                  name=date
+                  value="$(date +'%Y-%m-%d')"
+                  echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Create pr
               run: |
                   gh pr create -B "develop" \
                   -t "Nighty Build" \
-                  -b "Nighty Build"
+                  -b "Nighty Build ${{ steps.date.outputs.date }}"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            # - name: Get Date
-            #   id: date
-            #   run: |
-            #       name=date
-            #       value="$(date +'%Y-%m-%d')"
-            #       echo "${name}=${value}" >> $GITHUB_OUTPUT
             # - name: Get pr list
             #   id: pr
             #   run: |
