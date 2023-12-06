@@ -42,10 +42,10 @@ jobs:
                   date > generated.txt
                   git config user.name github-actions
                   git config user.email github-actions@github.com
-                  git switch -c feature/example-${{ steps.date.outputs.date }}
+                  git switch -c feature/example
                   git add .
                   git commit -m "Nighty Build"
-                  git push origin -u feature/example-${{ steps.date.outputs.date }}
+                  git push origin -u feature/example
             - name: Get pr list
               id: pr
               run: |
