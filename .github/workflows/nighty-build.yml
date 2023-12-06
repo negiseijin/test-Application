@@ -45,10 +45,10 @@ jobs:
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Create pr
               run: |
-                  pr_list=$(gh pr list --base develop --search merged:2023-12-03)
+                  pr_list=$(gh pr list --base develop --search merged:2023-12-02)
                   gh pr create -B "develop" \
                   -t "Nighty Build" \
-                  -b "Nighty Build ${pr_list}"
+                  -b "Nighty Build \n ${pr_list}"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
