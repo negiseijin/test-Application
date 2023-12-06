@@ -34,7 +34,7 @@ jobs:
             - name: Get Date
               id: date
               run: |
-                  name=action_fruit
+                  name=date
                   value="$(date +'%Y-%m-%d')"
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Create commit
