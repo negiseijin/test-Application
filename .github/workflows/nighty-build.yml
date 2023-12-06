@@ -37,10 +37,19 @@ jobs:
                   name=date
                   value="$(date +'%Y-%m-%d')"
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
-            - name: Create commit
+            - name: Print date
               run: |
                   echo ${{ steps.date.outputs.date }}
-
+            - name: Get pr list
+              id: pr
+              run: |
+                  name=list
+                  pr_list=$(gh pr list --json number | jq '[.[].number]')
+                  value=pr_list
+                  echo "${name}=${value}" >> $GITHUB_OUTPUT
+            - name: pr list
+              run: |
+                  echo ${{ steps.pr.outputs.list }}
             #   run: |
             #       date > generated.txt
             #       git config user.name github-actions
