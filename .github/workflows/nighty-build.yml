@@ -45,7 +45,7 @@ jobs:
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Create pr
               run: |
-                  pr_list=$(gh pr list --json number | jq '[.[].number]')
+                  pr_list=$(gh pr list --base develop --state merge  --search merged:2023-12-03)
                   gh pr create -B "develop" \
                   -t "Nighty Build" \
                   -b "Nighty Build ${pr_list}"
