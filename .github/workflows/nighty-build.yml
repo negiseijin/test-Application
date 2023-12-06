@@ -40,7 +40,6 @@ jobs:
             - name: Create commit
               run: |
                   echo ${{ steps.date.outputs.date }}
-                  echo ${{ date }}
 
             #   run: |
             #       date > generated.txt
