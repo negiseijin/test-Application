@@ -47,6 +47,8 @@ jobs:
                   pr_list=$(gh pr list --json number | jq '[.[].number]')
                   value=pr_list
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: pr list
               run: |
                   echo ${{ steps.pr.outputs.list }}
