@@ -29,14 +29,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            # - run: |
-            #       date > generated.txt
-            #       git config user.name github-actions
-            #       git config user.email github-actions@github.com
-            #       git switch -c feature/example
-            #       git add .
-            #       git commit -m "Nighty Build"
-            #       git push origin -u feature/example
             - name: Get Date
               id: date
               run: |
@@ -44,17 +36,20 @@ jobs:
                   value="$(date +'%Y-%m-%d')"
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Get pr
+              id: pr
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              id: pr
-              run: |
-                  name=pr
-                  value=$(gh pr list --state merged \
-                  --base develop \
-                  --search merged:2023-12-02 \
-                  --json number,title \
-                  --jq '.[] | .result = (.number|tostring) + " " + .title | .result')
-                  echo -ne "${name}=${value}" >> $GITHUB_OUTPUT
+              uses: actions/github-script@v6
+              with:
+                  script: |
+                      const name = 'pr'
+                      const value = $(gh pr list --state merged \
+                                      --base develop \
+                                      --search merged:2023-12-02 \
+                                      --json number,title \
+                                      --jq '.[] | .result = (.number|tostring) + " " + .title | .result')
+                      core.setOutput(name, value)
+
             - name: Result
               run: |
                   echo ${{ steps.pr.outputs.pr }}
