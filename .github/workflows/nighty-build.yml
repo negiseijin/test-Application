@@ -43,14 +43,26 @@ jobs:
                   name=date
                   value="$(date +'%Y-%m-%d')"
                   echo "${name}=${value}" >> $GITHUB_OUTPUT
-            - name: Create pr
-              run: |
-                  pr_list=$(gh pr list --base develop --search merged:2023-12-02)
-                  gh pr create -B "develop" \
-                  -t "Nighty Build" \
-                  -b "${pr_list}"
+            - name: Get pr
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              id: pr
+              run: |
+                  name=pr
+                  value=$(gh pr list --state merged \
+                  --base develop \
+                  --search merged:2023-12-02 \
+                  --json number,title \
+                  --jq '.[] | .result = (.number|tostring) + " " + .title | .result')
+                  echo "${name}=${value}" >> $GITHUB_OUTPUT
+            - name: Result
+              run: |
+                  echo ${{ steps.pr.outputs.pr }}
+            #   run: |
+            #       pr_list=$(gh pr list --base develop --search merged:2023-12-02)
+            #       gh pr create -B "develop" \
+            #       -t "Nighty Build" \
+            #       -b "${pr_list}"
 
             # - name: Get pr list
             #   id: pr
