@@ -3,6 +3,7 @@ test
 
 [![Android CI](https://github.com/negiseijin/test-Application/actions/workflows/android.yml/badge.svg?branch=develop)](https://github.com/negiseijin/test-Application/actions/workflows/android.yml)
 
+https://zenn.dev/seita/articles/d1dba77043be8fd50eeb
 https://github.com/fastlane/fastlane/issues/16618
 https://egashira.dev/blog/get-latest-pr-via-github-cli
 
