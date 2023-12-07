@@ -49,8 +49,11 @@ jobs:
               id: pr
               run: |
                   name=pr
-                  value=$(gh pr list --base develop --search merged:2023-12-02)
-                  echo "${name}=${value}" >> $GITHUB_OUTPUT
+                  value=$(gh pr list --state merged --base develop
+                  --search merged:2023-12-02 \
+                  --json number,title \
+                  --jq '.[] | .result = (.number|tostring) + " " + .title | .result')
+                  echo -ne "${name}=${value}" >> $GITHUB_OUTPUT
             - name: Result
               run: |
                   echo ${{ steps.pr.outputs.pr }}
