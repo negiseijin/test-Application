@@ -2,7 +2,7 @@ name: Nighty Build CI
 
 on:
     schedule:
-        - cron: "14 12 * * 1"
+        - cron: "21 12 * * *"
     workflow_dispatch:
         inputs:
             tags:
