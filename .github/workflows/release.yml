@@ -35,9 +35,9 @@ jobs:
               run: |
                   echo "version=$(
                   if ${{ github.event_name == 'workflow_dispatch' }}; then
-                    git describe --tags $(git rev-list --tags --max-count=1)
+                    echo git describe --tags $(git rev-list --tags --max-count=1)
                   else
-                    ${GITHUB_REF#refs/tags/}
+                    echo ${GITHUB_REF#refs/tags/}
                   fi
                   )" >> $GITHUB_OUTPUT
 
