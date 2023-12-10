@@ -6,8 +6,8 @@ on:
             - "v**"
     workflow_dispatch:
         inputs:
-            tag:
-                description: "Enter the version (tag) to release"
+            tags:
+                description: "Enter the version (tags) to release"
                 required: true
                 type: choice
                 default: patch
@@ -56,15 +56,15 @@ jobs:
             - name: Set Update version
               id: set-update-version
               run: |
-                  if ["${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.tag.major }}"]; then
+                  if ["${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.tags }}" == "major"]; then
                     version = ${{ steps.set-version.outputs.version }}
                     update-version = version | awk -F'[.]' '{sub(/[^0-9]+/, ""); $1++; print "v" $1 ".0.0"}'
                     echo "version=${update-version}" >> "$GITHUB_OUTPUT"
-                  elif ["${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.tag.minor }}"]; then
+                  elif ["${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.tags }}" == "minor"]; then
                     version = ${{ steps.set-version.outputs.version }}
                     update-version = version | awk -F'[.]' '{sub(/[^0-9]+/, ""); $2++; print "v" $1 "." $2 ".0"}'
                     echo "version=${update-version}" >> "$GITHUB_OUTPUT"
-                  elif ["${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.tag.patch }}"]; then
+                  elif ["${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.tags }}" == "patch"]; then
                     version = ${{ steps.set-version.outputs.version }}
                     update-version = version | awk -F'-' '{$NF++;} 1' OFS='-'
                     echo "version=${update-version}" >> "$GITHUB_OUTPUT"
