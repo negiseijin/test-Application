@@ -38,7 +38,10 @@ jobs:
                       ${{ runner.os }}-gradle-
             - name: Build with Gradle
               run: ./gradlew assembleDebug
+            - name: Set version
+              id: set-version
+              run: echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
             - uses: actions/upload-artifact@v3
               with:
-                  name: my-artifact
+                  name: artifact-${{ steps.set-version.outputs.version }}
                   path: ${{ github.workspace }}/app/build/outputs/apk/debug
