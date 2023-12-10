@@ -4,7 +4,17 @@ on:
     push:
         tags:
             - "v**"
-    workflow_call:
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: "Enter the version (tag) to release"
+                required: true
+                type: choice
+                default: patch
+                options:
+                    - major
+                    - minor
+                    - patch
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
@@ -38,10 +48,31 @@ jobs:
                       ${{ runner.os }}-gradle-
             - name: Build with Gradle
               run: ./gradlew assembleDebug
-            - name: Set version
+
+            - name: Set tag version
               id: set-version
               run: echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+            - name: Set Update version
+              id: set-update-version
+              run: |
+                  if ["${{ github.event_name }}" == "workflow_dispatch" && ${{ github.event.inputs.tag.major }}]; then
+                    version = ${{ steps.set-version.outputs.version }}
+                    update-version = version | awk -F'[.]' '{sub(/[^0-9]+/, ""); $1++; print "v" $1 ".0.0"}'
+                    echo "version=${update-version}" >> "$GITHUB_OUTPUT"
+                  elif ["${{ github.event_name }}" == "workflow_dispatch" && ${{ github.event.inputs.tag.minor }}]; then
+                    version = ${{ steps.set-version.outputs.version }}
+                    update-version = version | awk -F'[.]' '{sub(/[^0-9]+/, ""); $2++; print "v" $1 "." $2 ".0"}'
+                    echo "version=${update-version}" >> "$GITHUB_OUTPUT"
+                  elif ["${{ github.event_name }}" == "workflow_dispatch" && ${{ github.event.inputs.tag.patch }}]; then
+                    version = ${{ steps.set-version.outputs.version }}
+                    update-version = version | awk -F'-' '{$NF++;} 1' OFS='-'
+                    echo "version=${update-version}" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "version=${{ steps.set-version.outputs.version }}" >> "$GITHUB_OUTPUT"
+                  fi
+
             - uses: actions/upload-artifact@v3
               with:
-                  name: artifact-${{ steps.set-version.outputs.version }}
+                  name: artifact-${{ steps.set-update-version.outputs.version }}
                   path: ${{ github.workspace }}/app/build/outputs/apk/debug
