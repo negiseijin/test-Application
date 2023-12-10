@@ -1,9 +1,6 @@
 name: Release CI
 
 on:
-    pull_request:
-        branches:
-            - develop
     push:
         tags:
             - "v**"
