@@ -52,28 +52,12 @@ jobs:
             - name: Set tag version
               id: set-version
               run: |
-                  if: ${{ github.event_name == 'workflow_dispatch' }}
-                    echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> "$GITHUB_OUTPUT"
-                  if: ${{ github.event_name == 'push' }}
-                    echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+                  echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> "$GITHUB_OUTPUT"
 
             - name: Set Update version
               id: set-update-version
               run: |
-                  if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tags == 'major' }}
-                    version = ${{ steps.set-version.outputs.version }}
-                    update-version = version | awk -F'[.]' '{sub(/[^0-9]+/, ""); $1++; print "v" $1 ".0.0"}'
-                    echo "version=${update-version}" >> "$GITHUB_OUTPUT"
-                  if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tags == 'minor' }}
-                    version = ${{ steps.set-version.outputs.version }}
-                    update-version = version | awk -F'[.]' '{sub(/[^0-9]+/, ""); $2++; print "v" $1 "." $2 ".0"}'
-                    echo "version=${update-version}" >> "$GITHUB_OUTPUT"
-                  if:  ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tags == 'patch' }}
-                    version = ${{ steps.set-version.outputs.version }}
-                    update-version = version | awk -F'-' '{$NF++;} 1' OFS='-'
-                    echo "version=${update-version}" >> "$GITHUB_OUTPUT"
-                  if: ${{ github.event_name == 'push' }}
-                    echo "version=${{ steps.set-version.outputs.version }}" >> "$GITHUB_OUTPUT"
+                  echo "version=${{ steps.set-version.outputs.version }}" >> "$GITHUB_OUTPUT"
 
             - uses: actions/upload-artifact@v3
               with:
