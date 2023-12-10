@@ -1,0 +1,42 @@
+name: Nighty Build CI
+
+on:
+    workflow_dispatch:
+        inputs:
+            tags:
+                description: "Input the version (tags) to release"
+                required: true
+                type: string
+
+permissions:
+    contents: write
+    pull-requests: write
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Create git
+              run: |
+                  date > generated.txt
+                  git config user.name github-actions
+                  git config user.email github-actions@github.com
+                  git switch -c feature/${{ inputs.tags }}
+                  git add .
+                  git commit -m "Nighty Build"
+                  git push origin -u feature/example
+                  git tag ${{ inputs.tags }}
+                  git push origin ${{ inputs.tags }}
+            - name: Create pr
+              run: |
+                  gh pr create -B "develop" \
+                  -t "Nighty Build" \
+                  -b "Nighty Build"
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
