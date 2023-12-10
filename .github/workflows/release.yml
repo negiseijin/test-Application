@@ -1,9 +1,9 @@
 name: Release CI
 
 on:
-    push:
-        tags:
-            - "v**"
+    pull_request:
+        branches:
+            - develop
     workflow_dispatch:
         inputs:
             tags:
@@ -40,7 +40,7 @@ jobs:
                   if ${{ github.event_name == 'workflow_dispatch' }}; then
                     echo $(git describe --tags --abbrev=0 HEAD~)
                   else
-                    echo ${GITHUB_REF#refs/tags/}
+                    echo ${github.event.pull_request.title}
                   fi
                   )" >> $GITHUB_OUTPUT
 
