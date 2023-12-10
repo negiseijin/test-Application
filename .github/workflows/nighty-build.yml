@@ -2,13 +2,13 @@ name: Nighty Build CI
 
 on:
     schedule:
-        - cron: "21 12 * * *"
-    workflow_dispatch:
-        inputs:
-            tags:
-                description: "Input the version (tags) to release"
-                required: true
-                type: string
+        - cron: "29 12 * * *"
+    # workflow_dispatch:
+    #     inputs:
+    #         tags:
+    #             description: "Input the version (tags) to release"
+    #             required: true
+    #             type: string
 
 permissions:
     contents: write
@@ -29,16 +29,16 @@ jobs:
                   date > generated.txt
                   git config user.name github-actions
                   git config user.email github-actions@github.com
-                  git switch -c feature/${{ inputs.tags }}
+                  git switch -c feature/v1.0.0-8
                   git add .
                   git commit -m "Nighty Build"
                   git push origin -u HEAD
-                  git tag ${{ inputs.tags }}
-                  git push origin ${{ inputs.tags }}
+                  git tag v1.0.0-8
+                  git push origin v1.0.0-8
             - name: Create pr
               run: |
                   gh pr create -B "develop" \
-                  -t ${{ inputs.tags }} \
+                  -t v1.0.0-8 \
                   -b "Nighty Build"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
