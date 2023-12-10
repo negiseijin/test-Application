@@ -30,7 +30,7 @@ jobs:
                   git switch -c feature/${{ inputs.tags }}
                   git add .
                   git commit -m "Nighty Build"
-                  git push origin -u HEAD
+                  git push origin -u feature/example
                   git tag ${{ inputs.tags }}
                   git push origin ${{ inputs.tags }}
             - name: Create pr
