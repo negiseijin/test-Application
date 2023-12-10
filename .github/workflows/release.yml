@@ -30,12 +30,16 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+            - name: Set git
+              run: |
+                  git config user.name github-actions
+                  git config user.email github-actions@github.com
             - name: Set tag version
               id: set-version
               run: |
                   echo "version=$(
                   if ${{ github.event_name == 'workflow_dispatch' }}; then
-                    echo $(git describe --tags $(git rev-list --tags --max-count=1))
+                    echo $(git describe --tags --abbrev=0 HEAD~)
                   else
                     echo ${GITHUB_REF#refs/tags/}
                   fi
