@@ -1,0 +1,73 @@
+name: Release CI
+
+on:
+    push:
+        tags:
+            - "v**"
+    workflow_dispatch:
+        inputs:
+            tags:
+                description: "Enter the version (tags) to release"
+                required: true
+                type: choice
+                default: patch
+                options:
+                    - major
+                    - minor
+                    - patch
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set git
+              run: |
+                  git config user.name github-actions
+                  git config user.email github-actions@github.com
+            - name: Set tag version
+              id: set-version
+              run: |
+                  echo "version=$(
+                  if ${{ github.event_name == 'workflow_dispatch' }}; then
+                    echo $(git describe --tags --abbrev=0 HEAD~)
+                  else
+                    echo ${GITHUB_REF#refs/tags/}
+                  fi
+                  )" >> $GITHUB_OUTPUT
+
+            - name: Set Update version
+              id: set-update-version
+              run: |
+                  echo "version=${{ steps.set-version.outputs.version }}" >> "$GITHUB_OUTPUT"
+
+            - name: Set up JDK 17
+              uses: actions/setup-java@v4
+              with:
+                  java-version: "17"
+                  distribution: "temurin"
+                  cache: gradle
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
+            - uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                  key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                  restore-keys: |
+                      ${{ runner.os }}-gradle-
+            - name: Build with Gradle
+              run: ./gradlew assembleDebug
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: artifact-${{ steps.set-update-version.outputs.version }}
+                  path: ${{ github.workspace }}/app/build/outputs/apk/debug
