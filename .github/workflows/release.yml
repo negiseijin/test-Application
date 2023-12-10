@@ -51,7 +51,12 @@ jobs:
 
             - name: Set tag version
               id: set-version
-              run: echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+              run: |
+                  if ["${{ github.event_name }}" == "workflow_dispatch"]; then
+                    echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> "$GITHUB_OUTPUT"
+                   else
+                     echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+                   fi
 
             - name: Set Update version
               id: set-update-version
