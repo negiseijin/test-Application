@@ -38,7 +38,7 @@ jobs:
             - name: Get Tag
               id: get_tag
               run: |
-                  echo "tag=$(git ls-remote --tags)" >> "$GITHUB_OUTPUT"
+                  echo "tag=$(git ls-remote --tags --sort=committerdate | grep -o 'v.*' | sort -r | head -1)" >> "$GITHUB_OUTPUT"
 
             - name: Display Tag
               run: echo "The latest tag is ${{ steps.get_tag.outputs.tag }}"
