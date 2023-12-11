@@ -35,26 +35,11 @@ jobs:
               #   git push origin -u HEAD
               #   git tag ${{ inputs.tags }}
               #   git push origin ${{ inputs.tags }}
-              #   run: |
-            #       git fetch --tags
-            #       echo "tag=$(git describe --abbrev=0 --tags)" >> "$GITHUB_OUTPUT"
             - name: Get Tag
               id: get_tag
-              uses: actions/github-script@v7
-              with:
-                  result-encoding: string
-                  retries: 3
-                  script: |
-                      console.log({ context.ref });
-                      console.log({ context };
-                      const tag = context.ref.replace('refs/tags/', '');
-                      console.log(tag);
-                      const result = github.rest.git.getTag({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            tag_sha: context.repo.
-                          });
-                          console.log(result);
+              run: |
+                  echo "tag=$(git ls-remote --tags)" >> "$GITHUB_OUTPUT"
+
             - name: Display Tag
               run: echo "The latest tag is ${{ steps.get_tag.outputs.tag }}"
             # - name: Create pr
