@@ -3,6 +3,10 @@ test
 
 [![Android CI](https://github.com/negiseijin/test-Application/actions/workflows/android.yml/badge.svg?branch=develop)](https://github.com/negiseijin/test-Application/actions/workflows/android.yml)
 
+```git describe --tags `git rev-list --tags --max-count=1` ```
+
+https://tech.takanakahiko.me/posts/2023-01-19T08:07:55.257Z/
+
 https://zenn.dev/seita/articles/d1dba77043be8fd50eeb
 https://github.com/fastlane/fastlane/issues/16618
 https://egashira.dev/blog/get-latest-pr-via-github-cli
