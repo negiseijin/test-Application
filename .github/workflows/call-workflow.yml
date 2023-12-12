@@ -2,7 +2,7 @@ name: Call workflow
 
 on:
     push:
-        branches: feature/reusable-workflow
+        branches: feature/reusable-workflow2
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
