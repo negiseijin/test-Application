@@ -1,0 +1,24 @@
+name: Reusable workflow
+
+on:
+    workflow_call:
+        inputs:
+            config-path:
+                required: true
+                type: string
+        secrets:
+            token:
+                required: true
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Display inputs
+              run: |
+                  echo ${{ inputs.config-path }}
