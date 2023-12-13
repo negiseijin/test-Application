@@ -1,8 +1,7 @@
 name: Call workflow
 
 on:
-    push:
-        branches: feature/reusable-workflow
+    workflow_dispatch:
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,10 +9,8 @@ concurrency:
 
 jobs:
     call-workflow-passing-data:
-        name: Pass input and secrets to my-action
-        runs-on: ubuntu-latest
-        steps:
-            - uses: ./.github/workflows/reusable-workflow.yml
-              with:
-                  config-path: .github/workflows/call-workflow.yml
-                  #   secrets: inherit
+        uses: ./.github/workflows/reusable-workflow.yml
+        with:
+            config-path: .github/labeler.yml
+        secrets:
+            token: ${{ secrets.GITHUB_TOKEN }}
