@@ -11,11 +11,8 @@ concurrency:
 
 jobs:
     call-workflow-passing-data:
-        name: Pass input and secrets to my-action
-        runs-on: ubuntu-latest
-        steps:
-            - uses: ./.github/workflows/reusable-workflow.yml
-              with:
-                  config-path: .github/workflows/call-workflow.yml
-                  secrets:
-                      token: ${{ secrets.GITHUB_TOKEN }}
+        uses: /.github/workflows/reusable-workflow.yml
+        with:
+            config-path: .github/labeler.yml
+        secrets:
+            token: ${{ secrets.GITHUB_TOKEN }}
