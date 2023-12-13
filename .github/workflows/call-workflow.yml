@@ -12,5 +12,4 @@ jobs:
         uses: ./.github/workflows/reusable-workflow.yml
         with:
             config-path: .github/labeler.yml
-        secrets:
-            token: ${{ secrets.GITHUB_TOKEN }}
+        secrets: inherit

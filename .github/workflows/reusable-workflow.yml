@@ -19,6 +19,5 @@ jobs:
         name: Build
         runs-on: ubuntu-latest
         steps:
-            - name: Display inputs
-              run: |
-                  echo ${{ inputs.config-path }}
+            - name: Reusable workflow
+              run: echo ${{ inputs.config-path }}
