@@ -17,4 +17,5 @@ jobs:
             - uses: ./.github/workflows/reusable-workflow.yml
               with:
                   config-path: .github/workflows/call-workflow.yml
-                  secrets: ${{ secrets.GITHUB_TOKEN }}
+                  secrets:
+                      token: ${{ secrets.GITHUB_TOKEN }}
