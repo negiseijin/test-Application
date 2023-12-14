@@ -9,8 +9,8 @@ changelog:
               labels:
                   - dependencies
         - title: Bug Fixes
-            labels:
-            - bug
+          labels:
+              - bug
         - title: 👒 Dependencies
           labels:
               - dependencies
