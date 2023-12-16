@@ -24,7 +24,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                ref: develop
+                fetch-depth: 0
             - uses: ruby/setup-ruby@v1
               with:
                 ruby-version: '3.2'
@@ -35,3 +35,16 @@ jobs:
                 git config user.email github-actions@github.com
             - name: Bump up version
               run: bundle exec fastlane bump_up_version_code
+            - name: Get latest tag
+              id: tag-selector
+              run: |
+               git fetach --prune
+               tag=git describe --tags `git rev-list --tags --max-count=1`
+               echo "tag=$tag" >> "$GITHUB_OUTPUT"
+            - name: Create pull request
+              env:
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                tag_name=${{ steps.tag-selector.outputs.tag }}
+                BODY=$(gh api --method POST -H "Accept: application/vnd.github+json" /repos/{owner}/{repo}/releases/generate-notes -f tag_name="$tag_name -f target_commitish='develop' | jq --raw-output .body)
+                gh pr create --base develop --head "$VERSION" --title "Version Bump $VERSION" --body "$BODY"

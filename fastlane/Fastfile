@@ -47,6 +47,7 @@ platform :android do
     new_version_code = android_set_version_code(
       gradle_file: "app/build.gradle.kts"
     )
+    sh "git switch develop"
     branch = "#{version_name}-#{new_version_code}"
     sh "git switch -c night-release/#{branch}"
     git_commit(
