@@ -52,10 +52,8 @@ jobs:
               with:
                 name: artifact-${{ inputs.tag }}
                 path: ${{ github.workspace }}/app/build/outputs/apk/debug
-            - name: Download artifact
-              run: gh run download ${{ github.run_id }} -n artifact-${{ inputs.tag }} -D artifact-${{ inputs.tag }}
             - name: Create release
               run: gh release create ${{ inputs.tag }} --generate-notes
             - name: Upload artifact to release
               run: |
-               gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}
+               gh release upload ${{ inputs.tag }} tar -czvf artifact-${{ inputs.tag }}.tar.gz ${{ github.workspace }}/app/build/outputs/apk/debug
