@@ -1,0 +1,63 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  desc "Bump up version code"
+  lane :bump_up_version_code do
+    previous_version_code = android_get_version_code(
+        gradle_file: "app/build.gradle.kts"
+    )
+    version_name = android_get_version_name(
+      gradle_file: "app/build.gradle.kts"
+    )
+    new_version_code = android_set_version_code(
+      gradle_file: "app/build.gradle.kts"
+    )
+    branch = "#{version_name}-#{new_version_code}"
+    sh "git switch -c night-release/#{branch}"
+    git_commit(
+      path: ["app/build.gradle.kts"],
+      message: "Version Bump #{branch}"
+    )
+    add_git_tag(
+      tag: "v#{version_name}-#{previous_version_code}",
+    )
+    push_to_git_remote(
+      set_upstream: true
+    )
+  end
+end
