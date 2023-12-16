@@ -53,6 +53,6 @@ jobs:
                 name: my-artifact
                 path: ${{ github.workspace }}/app/build/outputs/apk/debug
             - name: Create release
-              run: gh release create ${{ inputs.tag }}
+              run: gh release create ${{ inputs.tag }} --generate-notes
             - name: Upload Artifact to Release
-              run: gh release update ${{ inputs.tag }} ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }}
+              run: gh release upload ${{ inputs.tag }} ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }}
