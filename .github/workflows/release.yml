@@ -52,12 +52,10 @@ jobs:
               with:
                 name: my-artifact
                 path: ${{ github.workspace }}/app/build/outputs/apk/debug
-            - name: Download release
-              uses: actions/download-artifact@v4
-              with:
-                name: ${{ github.workspace }}/artifact
+            - name: Download artifact
+              run: gh run download ${{ github.run_id }} -n my-artifact
             - name: Create release
               run: gh release create ${{ inputs.tag }} --generate-notes
-            - name: Upload Artifact to Release
+            - name: Upload artifact to release
               run: |
-               gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifact
+               gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifacts
