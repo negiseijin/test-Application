@@ -47,14 +47,6 @@ Deploy a new version to the Google Play
 
 Bump up version code
 
-### android set_version
-
-```sh
-[bundle exec] fastlane android set_version
-```
-
-Update version
-
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
