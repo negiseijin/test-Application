@@ -17,10 +17,15 @@ jobs:
         permissions:
             contents: write
             pull-requests: write
+
+        strategy:
+          matrix:
+            reviewer: [negiseijin]
+            label: [enhancement, documentation]
+
         env:
             BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
             BASE_BRANCH: develop
-            REVIEWER: negiseijin
 
         outputs:
             tag: ${{ steps.tag-selector.outputs.tag }}
@@ -51,7 +56,7 @@ jobs:
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish='develop' --jq .body)
-                gh pr create --base ${{ env.BASE_BRANCH }} --title "Version Bump $tag_name" --body "$body" --reviewer ${{ env.REVIEWER }}
+                gh pr create --base ${{ env.BASE_BRANCH }} --title "Version Bump $tag_name" --body "$body" --reviewer ${{ matrix.reviewer }} --label ${{ matrix.label }}
 
     release:
         name: Call release
