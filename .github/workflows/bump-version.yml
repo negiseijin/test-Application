@@ -46,4 +46,5 @@ jobs:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
-                gh pr create --base develop --title "Version Bump" --body "test"
+                BODY=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish='develop' --jq .body)
+                gh pr create --base develop --title "Version Bump $tag_name" --body "$BODY"
