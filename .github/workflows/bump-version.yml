@@ -47,4 +47,4 @@ jobs:
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
                 BODY=$(gh api --method POST -H "Accept: application/vnd.github+json" /repos/{owner}/{repo}/releases/generate-notes -f tag_name="$tag_name -f target_commitish='develop' | jq --raw-output .body)
-                gh pr create --base develop --title "Version Bump $VERSION" --body "$BODY"
+                gh pr create --base develop --title "Version Bump $tag_name" --body "$BODY"
