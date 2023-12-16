@@ -11,6 +11,10 @@ jobs:
         steps:
             - name: Step1
               run: echo Step1
+            - name: Dump GitHub context
+              env:
+                GITHUB_CONTEXT: ${{ toJson(github) }}
+              run: echo "$GITHUB_CONTEXT"
 
     call-workflow-passing-data:
         name: Call reusable
