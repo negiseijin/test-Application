@@ -55,5 +55,6 @@ jobs:
             - name: Create release
               run: gh release create ${{ inputs.tag }} --generate-notes
             - name: Upload artifact to release
+              shell: bash
               run: |
                gh release upload ${{ inputs.tag }} tar -czvf artifact-${{ inputs.tag }}.tar.gz ${{ github.workspace }}/app/build/outputs/apk/debug
