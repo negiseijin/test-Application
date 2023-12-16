@@ -54,4 +54,4 @@ jobs:
               env:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-               gh release create ${{ inputs.tag }} ${{ github.server_url }}/${{ github.event.repository }}/actions/runs/${{ github.run_id }}/${{ steps.artifact-upload-step.outputs.artifact-id }}
+               gh release create ${{ inputs.tag }} ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}/${{ steps.artifact-upload-step.outputs.artifact-id }}
