@@ -54,8 +54,10 @@ platform :android do
       message: "Version Bump #{branch}"
     )
     add_git_tag(
-      tag: "#{version_name}-#{previous_version_code}",
-      prefix: "v",
+      tag: "v#{version_name}-#{previous_version_code}",
+    )
+    push_to_git_remote(
+      set_upstream: true
     )
   end
 end
