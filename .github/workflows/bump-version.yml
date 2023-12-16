@@ -11,15 +11,16 @@ concurrency:
 
 jobs:
     build:
-        name: Build
+        name: Bump up
         runs-on: ubuntu-latest
         timeout-minutes: 20
         permissions:
             contents: write
             pull-requests: write
-
         env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
             BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
+        outputs:
+            tag: ${{ steps.tag-selector.outputs.tag }}
 
         steps:
             - uses: actions/checkout@v4
@@ -38,13 +39,23 @@ jobs:
             - name: Get latest tag
               id: tag-selector
               run: |
-               git fetch --prune
-               tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-               echo "tag=$tag" >> "$GITHUB_OUTPUT"
+                git fetch --prune
+                tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+                echo "tag=$tag" >> "$GITHUB_OUTPUT"
             - name: Create pull request
               env:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
-                BODY=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish='develop' --jq .body)
-                gh pr create --base develop --title "Version Bump $tag_name" --body "$BODY"
+                body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish='develop' --jq .body)
+                gh pr create --base develop --title "Version Bump $tag_name" --body "$body" --reviewer @negiseijin
+
+    release:
+        name: Call reusable
+        needs: build
+
+        uses: ./.github/workflows/release.yml
+        with:
+            tag: ${{ needs.build.outputs.tag }}
+        secrets:
+            token: ${{ secrets.GITHUB_TOKEN }}
