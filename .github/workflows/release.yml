@@ -57,12 +57,16 @@ jobs:
               with:
                 name: artifact-${{ inputs.tag }}
                 path: ${{ github.workspace }}/app/build/outputs/apk/debug
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: artifact-${{ inputs.tag }}
             - name: Create release
-              run: gh release create ${{ inputs.tag }} --generate-notes
-            - name: Upload artifact to release
-              shell: bash
-              run: |
-               zip -r artifact-${{ inputs.tag }}.zip \
-                ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk \
-                ${{ github.workspace }}/app/build/outputs/apk/debug/output-metadata.json
-               gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip
+              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }} --generate-notes
+            # - name: Upload artifact to release
+            #   shell: bash
+            #   run: |
+            #    zip -r artifact-${{ inputs.tag }}.zip \
+            #     ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk \
+            #     ${{ github.workspace }}/app/build/outputs/apk/debug/output-metadata.json
+            #    gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip
