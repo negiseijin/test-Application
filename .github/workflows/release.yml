@@ -62,10 +62,15 @@ jobs:
               with:
                   name: artifact-${{ inputs.tag }}
                   path: ${{ github.workspace }}/artifacts
+            - name: Create artifact to release
+              shell: bash
+              run: |
+                 zip -r artifact-${{ inputs.tag }}.zip \
+                 ${{ github.workspace }}/artifacts
             - name: Display structure of downloaded files
               run: ls -R ${{ github.workspace }}/artifacts
             - name: Create release
-              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifacts/artifact-${{ inputs.tag }}.zip --generate-notes
+              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip --generate-notes
             # - name: Upload artifact to release
             #   shell: bash
             #   run: |
