@@ -68,7 +68,8 @@ jobs:
                 GITHUB_CONTEXT: ${{ toJson(github) }}
               run: echo "$GITHUB_CONTEXT"
             - name: Update pr
-              run: gh pr list \
-                    --state open \
-                    --author github-actions \
-                    --search "Version Bump ${{ inputs.tag }} in:title"
+              run: |
+                 gh pr list \
+                 --state open \
+                 --author github-actions \
+                 --search "Version Bump ${{ inputs.tag }} in:title"
