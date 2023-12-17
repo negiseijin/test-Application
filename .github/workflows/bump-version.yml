@@ -58,6 +58,7 @@ jobs:
         needs: build
         permissions:
             contents: write
+            pull-requests: write
 
         uses: ./.github/workflows/release.yml
         with:
