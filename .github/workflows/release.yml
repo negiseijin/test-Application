@@ -60,7 +60,7 @@ jobs:
             - name: Create artifact to release
               run: |
                    tar -czf artifact-${{ inputs.tag }}.tar.gz -C \
-                   ${{ github.workspace }}/app/build/outputs/apk/debug . \
-                   ${{ github.workspace }}/app/build/reports .
+                   ${{ github.workspace }}/app/build/outputs/apk/debug \
+                   ${{ github.workspace }}/app/build/reports
             - name: Create release
               run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
