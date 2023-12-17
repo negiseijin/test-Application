@@ -62,7 +62,7 @@ jobs:
               with:
                   name: artifact-${{ inputs.tag }}
             - name: Create release
-              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }} --generate-notes
+              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip --generate-notes
             # - name: Upload artifact to release
             #   shell: bash
             #   run: |
