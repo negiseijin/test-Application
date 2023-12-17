@@ -63,3 +63,9 @@ jobs:
                    ${{ github.workspace }}/app/build/outputs/apk/debug .
             - name: Create release
               run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
+            - name: Dump GitHub context
+              env:
+                GITHUB_CONTEXT: ${{ toJson(github) }}
+              run: echo "$GITHUB_CONTEXT"
+            - name: Update pr
+              run: gh pr list --search --state open --title "Version Bump ${{ inputs.tag }}" --author github-actions
