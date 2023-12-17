@@ -66,10 +66,9 @@ jobs:
               shell: bash
               run: |
                  zip -r -j artifact-${{ inputs.tag }}.zip \
-                 ${{ github.workspace }}/app/build/outputs/apk/debug \
-                 ${{ github.workspace }}/app/build/reports
+                 ${{ github.workspace }}/app/build/outputs/apk/debug
             - name: Display structure of downloaded files
-              run: ls -R ${{ github.workspace }}/artifacts
+              run: ls -R ${{ github.workspace }}
             - name: Create release
               run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip --generate-notes
             # - name: Upload artifact to release
