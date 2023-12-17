@@ -57,16 +57,17 @@ jobs:
               with:
                 name: artifact-${{ inputs.tag }}
                 path: ${{ github.workspace }}/app/build/outputs/apk/debug
-            - name: Download artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: artifact-${{ inputs.tag }}
-                  path: ${{ github.workspace }}/artifacts
+            # - name: Download artifact
+            #   uses: actions/download-artifact@v4
+            #   with:
+            #       name: artifact-${{ inputs.tag }}
+            #       path: ${{ github.workspace }}/artifacts
             - name: Create artifact to release
               shell: bash
               run: |
-                 zip -r artifact-${{ inputs.tag }}.zip \
-                 ${{ github.workspace }}/artifacts
+                 zip -r -j artifact-${{ inputs.tag }}.zip \
+                 ${{ github.workspace }}/app/build/outputs/apk/debug \
+                 ${{ github.workspace }}/app/build/reports
             - name: Display structure of downloaded files
               run: ls -R ${{ github.workspace }}/artifacts
             - name: Create release
