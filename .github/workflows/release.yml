@@ -51,26 +51,21 @@ jobs:
             #   run: ./gradlew test
             - name: Build with Gradle
               run: ./gradlew assembleDebug
+            - name: Create artifact to release
+              shell: bash
+              run: |
+                 tar -czf artifact-${{ inputs.tag }}.tar.gz \
+                 -C ${{ github.workspace }}/app/build/outputs/apk/debug .
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               id: artifact-upload-step
               with:
                 name: artifact-${{ inputs.tag }}
-                path: ${{ github.workspace }}/app/build/outputs/apk/debug
-            # - name: Download artifact
-            #   uses: actions/download-artifact@v4
-            #   with:
-            #       name: artifact-${{ inputs.tag }}
-            #       path: ${{ github.workspace }}/artifacts
-            - name: Create artifact to release
-              shell: bash
-              run: |
-                 zip -r -j artifact-${{ inputs.tag }}.zip \
-                 ${{ github.workspace }}/app/build/outputs/apk/debug
+                path: ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz
             - name: Display structure of downloaded files
               run: ls -R ${{ github.workspace }}
             - name: Create release
-              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip --generate-notes
+              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
             # - name: Upload artifact to release
             #   shell: bash
             #   run: |
