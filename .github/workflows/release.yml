@@ -51,25 +51,16 @@ jobs:
             #   run: ./gradlew test
             - name: Build with Gradle
               run: ./gradlew assembleDebug
-            - name: Create artifact to release
-              shell: bash
-              run: |
-                 tar -czf artifact-${{ inputs.tag }}.tar.gz \
-                 -C ${{ github.workspace }}/app/build/outputs/apk/debug .
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               id: artifact-upload-step
               with:
                 name: artifact-${{ inputs.tag }}
-                path: ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz
-            - name: Display structure of downloaded files
-              run: ls -R ${{ github.workspace }}
+                path: ${{ github.workspace }}/app/build/outputs/apk/debug
+            - name: Create artifact to release
+              run: |
+                   tar -czf artifact-${{ inputs.tag }}.tar.gz \
+                   -C ${{ github.workspace }}/app/build/outputs/apk/debug . \
+                   -r .editorconfig ./newdir
             - name: Create release
-              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
-            # - name: Upload artifact to release
-            #   shell: bash
-            #   run: |
-            #    zip -r artifact-${{ inputs.tag }}.zip \
-            #     ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk \
-            #     ${{ github.workspace }}/app/build/outputs/apk/debug/output-metadata.json
-            #    gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip
+              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip --generate-notes
