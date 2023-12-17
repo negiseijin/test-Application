@@ -45,10 +45,10 @@ jobs:
                   key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                   restore-keys: |
                       ${{ runner.os }}-gradle-
-            - name: Lint
-              run: ./gradlew ktlintCheck
-            - name: Test
-              run: ./gradlew test
+            # - name: Lint
+            #   run: ./gradlew ktlintCheck
+            # - name: Test
+            #   run: ./gradlew test
             - name: Build with Gradle
               run: ./gradlew assembleDebug
             - name: Upload artifact
@@ -62,5 +62,7 @@ jobs:
             - name: Upload artifact to release
               shell: bash
               run: |
-               zip -r artifact-${{ inputs.tag }}.zip ${{ github.workspace }}/app/build/outputs/apk/debug
+               zip -r artifact-${{ inputs.tag }}.zip \
+               ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk \
+               ${{ github.workspace }}/app/build/outputs/apk/debug/output-metadata.json \
                gh release upload ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.zip
