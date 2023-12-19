@@ -17,6 +17,7 @@ jobs:
         permissions:
             contents: write
             pull-requests: write
+            actions: write
 
         env:
             BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
@@ -53,15 +54,15 @@ jobs:
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish=${{ env.BASE_BRANCH }} --jq .body)
                 gh pr create --base ${{ env.BASE_BRANCH }} --title "Version Bump $tag_name" --body "$body"
 
-    release:
-        name: Call release
-        needs: build
-        permissions:
-            contents: write
-            pull-requests: write
+    # release:
+    #     name: Call release
+    #     needs: build
+    #     permissions:
+    #         contents: write
+    #         pull-requests: write
 
-        uses: ./.github/workflows/release.yml
-        with:
-            tag: ${{ needs.build.outputs.tag }}
-        secrets:
-            token: ${{ secrets.GITHUB_TOKEN }}
+    #     uses: ./.github/workflows/release.yml
+    #     with:
+    #         tag: ${{ needs.build.outputs.tag }}
+    #     secrets:
+    #         token: ${{ secrets.GITHUB_TOKEN }}
