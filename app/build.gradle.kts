@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -68,4 +69,4 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 }
 
-apply(from = "${projectDir }/lint.gradle.kts")
+apply(from = "${projectDir}/lint.gradle.kts")

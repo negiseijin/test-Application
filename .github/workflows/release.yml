@@ -75,5 +75,5 @@ jobs:
                     --search "Version Bump ${{ inputs.tag }} in:title" \
                     --jq ".[] | [.body]|@csv" \
                     --json "body"
-                new_body=#✨ releases:[${{ inputs.tag }}](${{ github.repositoryUrl }}/releases/tag/${{ inputs.tag }})
+                new_body=#✨ releases:[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }})
                 git pr edit $number --body "$new_body $body"
