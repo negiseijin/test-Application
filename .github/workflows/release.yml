@@ -55,12 +55,12 @@ jobs:
             #   run: ./gradlew test
             - name: Build with Gradle
               run: ./gradlew assembleDebug
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              id: artifact-upload-step
-              with:
-                name: artifact-${{ inputs.tag }}
-                path: ${{ github.workspace }}/app/build/outputs/apk/debug
+            # - name: Upload artifact
+            #   uses: actions/upload-artifact@v4
+            #   id: artifact-upload-step
+            #   with:
+            #     name: artifact-${{ inputs.tag }}
+            #     path: ${{ github.workspace }}/app/build/outputs/apk/debug
             - name: Create artifact to release
               id: create-artifact-to-release
               run: |
@@ -68,13 +68,15 @@ jobs:
                    ${{ github.workspace }}/app/build/outputs/apk/debug .
             - name: Create release
               id: create-release
-              run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
+              run: |
+                release=$(gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes)
+                echo "release=$release" >> "$GITHUB_OUTPUT"
             - name: Update pr
               id: update-pr
               run: |
                 body=$(gh pr view ${{ inputs.pr }} --json "body" --jq ".[]")
                 gh pr edit ${{ inputs.pr }} \
-                --body "## ✨ releases :[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }})<br/>$body"
+                --body "# ✨ releases: [${{ inputs.tag }}](${{ steps.create-release.outputs.release }}$body"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
@@ -82,7 +84,7 @@ jobs:
                 echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
                 echo "| Step | Outcome | Remarks |" >> $GITHUB_STEP_SUMMARY
                 echo "|------|---------|---------|" >> $GITHUB_STEP_SUMMARY
-                echo "|Upload artifact|\`${{ steps.artifact-upload-step.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
+                # echo "|Upload artifact|\`${{ steps.artifact-upload-step.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
                 echo "|Create artifact to release|\`${{ steps.create-artifact-to-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
-                echo "|Create Release|\`${{ steps.create-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
+                echo "|Create Release|\`${{ steps.create-release.outcome }}\`| ${{ steps.create-release.outputs.release }} |" >> $GITHUB_STEP_SUMMARY
                 echo "|Update pr|\`${{ steps.update-pr.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
