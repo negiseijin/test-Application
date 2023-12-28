@@ -56,13 +56,13 @@ jobs:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
-                title=$(:up: Version Bump v${{ steps.version-selector.outputs.version }})
+                title=$(":up: Version Bump v${{ steps.version-selector.outputs.version }}")
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish=${{ env.BASE_BRANCH }} --jq .body)
-                gh pr create --base ${{ env.BASE_BRANCH }} --title "$title" --body "$body"
+                gh pr create --base ${{ env.BASE_BRANCH }} --title ":up: Version Bump v$title" --body "$body"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
-                  echo "## JOBS_SUMMARY if [[ ${{ job.status == 'success' }} ]]; then :tada:; else :x:; fi" >> $GITHUB_STEP_SUMMARY
+                  echo "## JOBS_SUMMARY '${{ job.status }}' === 'success' ? ':tada:' : ':x:'" >> $GITHUB_STEP_SUMMARY
                   echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
                   echo "| Step | Outcome | Remarks |" >> $GITHUB_STEP_SUMMARY
                   echo "|------|---------|---------|" >> $GITHUB_STEP_SUMMARY
