@@ -94,3 +94,5 @@ jobs:
             - release
 
         uses: ./.github/workflows/android.yml
+        secrets:
+            token: ${{ secrets.GITHUB_TOKEN }}
