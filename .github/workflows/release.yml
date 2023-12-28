@@ -73,7 +73,11 @@ jobs:
               id: body-selector
               run: |
                 body=$(gh pr view ${{ inputs.pr }} --json "body" --jq ".[]")
-                echo "body=$body" >> "$GITHUB_OUTPUT"
+                {
+                    echo <<EOF
+                    echo "body=$body"
+                    echo EOF
+                } >> "$GITHUB_OUTPUT"
             - name: Set up new body
               id: new-body-selector
               run: echo "new-body=$(#✨ releases :[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }}))" >> "$GITHUB_OUTPUT"
