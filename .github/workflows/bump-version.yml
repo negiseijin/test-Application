@@ -56,9 +56,9 @@ jobs:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
-                title=$(":up: Version Bump v${{ steps.version-selector.outputs.version }}")
+                title=${{ steps.version-selector.outputs.version }}
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish=${{ env.BASE_BRANCH }} --jq .body)
-                gh pr create --base ${{ env.BASE_BRANCH }} --title $title --body "$body"
+                gh pr create --base ${{ env.BASE_BRANCH }} --title ":up: Version Bump v$title" --body "$body"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
