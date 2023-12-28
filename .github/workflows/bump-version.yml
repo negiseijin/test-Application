@@ -49,7 +49,7 @@ jobs:
             - name: Set up version
               id: version-selector
               run: |
-                version=${git branch --show-current | sed "s/night-release\///"}
+                version=$(git branch --show-current | sed 's/night-release\///')
                 echo "version=$version" >> "$GITHUB_OUTPUT"
             - name: Create pull request
               env:
