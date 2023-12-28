@@ -60,20 +60,28 @@ jobs:
                 name: artifact-${{ inputs.tag }}
                 path: ${{ github.workspace }}/app/build/outputs/apk/debug
             - name: Create artifact to release
+              id: create-artifact-to-release
               run: |
                    tar -czf artifact-${{ inputs.tag }}.tar.gz -C \
                    ${{ github.workspace }}/app/build/outputs/apk/debug .
             - name: Create release
+              id: create-release
               run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
             - name: Update pr
+              id: update-pr
               run: |
-                number=$(gh pr list \
-                        --search "is:open Version Bump ${{ inputs.tag }} in:title" \
-                        --jq ".[] | [.number] | @csv" \
-                        --json "number")
-                body=$(gh pr list \
-                    --search "is:open Version Bump ${{ inputs.tag }} in:title" \
-                    --jq ".[] | [.body] | @csv" \
-                    --json "body")
-                new_body=#✨ releases:[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }})
+                number=$(gh pr list --search "is:open Version Bump ${{ inputs.tag }} in:title" --jq ".[] | [.number] | @csv" --json "number")
+                body=$(gh pr list --search "is:open Version Bump ${{ inputs.tag }} in:title" --jq ".[] | [.body] | @csv" --json "body")
+                new_body=$(echo "#✨ releases:[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }})")
                 git pr edit $number --body "$new_body  $body"
+            - name: Disp step summary
+              if: ${{ always() }}
+              run: |
+                echo "## JOBS_SUMMARY "${{ job.status == 'success' && ':tada:' || ':x:' }}"" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+                echo "| Step | Outcome | Remarks |" >> $GITHUB_STEP_SUMMARY
+                echo "|------|---------|---------|" >> $GITHUB_STEP_SUMMARY
+                echo "|Upload artifact|\`${{ steps.artifact-upload-step.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
+                echo "|Create artifact to release|\`${{ steps.create-artifact-to-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
+                echo "|Create Release|\`${{ steps.create-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
+                echo "|Update pr|\`${{ steps.update-pr.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
