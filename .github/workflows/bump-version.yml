@@ -49,16 +49,25 @@ jobs:
             - name: Set up version
               id: version-selector
               run: |
-                version=$(git branch --show-current | sed 's/night-release\///')
+                version=$(git branch --show-current | sed "s/night-release\///")
                 echo "version=$version" >> "$GITHUB_OUTPUT"
             - name: Create pull request
               env:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
-                title=:up: Version Bump ${{ steps.version-selector.outputs.title }}
+                title=$(:up: Version Bump ${{ steps.version-selector.outputs.title }})
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish=${{ env.BASE_BRANCH }} --jq .body)
-                gh pr create --base ${{ env.BASE_BRANCH }} --title $title --body "$body"
+                gh pr create --base ${{ env.BASE_BRANCH }} --title "$title" --body "$body"
+            - name: Disp step summary
+              if: ${{ always() }}
+              run: |
+                  echo "### STEP_SUMMARY :rocket:" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+                  echo "| Step | Outcome | Remarks |" >> $GITHUB_STEP_SUMMARY
+                  echo "|------|---------|---------|" >> $GITHUB_STEP_SUMMARY
+                  echo "|Get latest tag|\`${{ steps.tag-selector.outcome }}\`|\`${{ steps.tag-selector.outputs.tag }}\`|" >> $GITHUB_STEP_SUMMARY
+                  echo "|Set up version|\`${{ steps.version-selector.outcome }}\`|\`${{ steps.version-selector.outputs.version }}\`|" >> $GITHUB_STEP_SUMMARY
 
     release:
         name: Call release
