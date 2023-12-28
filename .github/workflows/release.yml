@@ -73,8 +73,7 @@ jobs:
               id: update-pr
               run: |
                 body=$(gh pr view ${{ inputs.pr }} --json "body" --jq ".[]")
-                new-body=$(echo #✨ releases ${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }})
-                gh pr edit ${{ inputs.pr }} --body "$new-body<br/>$body"
+                gh pr edit ${{ inputs.pr }} --body "new-body<br/>$body"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
