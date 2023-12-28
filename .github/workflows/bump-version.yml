@@ -46,13 +46,19 @@ jobs:
                 git fetch --prune
                 tag=$(git describe --tags `git rev-list --tags --max-count=1`)
                 echo "tag=$tag" >> "$GITHUB_OUTPUT"
+            - name: Set up version
+              id: version-selector
+              run: |
+                version=${git branch --show-current | sed 's/night-release\///'}
+                echo "version=$version" >> "$GITHUB_OUTPUT"
             - name: Create pull request
               env:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
+                title=:up: Version Bump ${{ steps.version-selector.outputs.title }}
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish=${{ env.BASE_BRANCH }} --jq .body)
-                gh pr create --base ${{ env.BASE_BRANCH }} --title "Version Bump $tag_name" --body "$body"
+                gh pr create --base ${{ env.BASE_BRANCH }} --title $title --body "$body"
 
     release:
         name: Call release

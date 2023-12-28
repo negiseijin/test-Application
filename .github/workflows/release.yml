@@ -67,13 +67,13 @@ jobs:
               run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
             - name: Update pr
               run: |
-                number=gh pr list --state open \
-                        --search "Version Bump ${{ inputs.tag }} in:title" \
-                        --jq ".[] | [.number]|@csv" \
-                        --json "number"
-                body=gh pr list --state open \
-                    --search "Version Bump ${{ inputs.tag }} in:title" \
-                    --jq ".[] | [.body]|@csv" \
-                    --json "body"
+                number=$(gh pr list \
+                        --search "is:open Version Bump ${{ inputs.tag }} in:title" \
+                        --jq ".[] | [.number] | @csv" \
+                        --json "number")
+                body=$(gh pr list \
+                    --search "is:open Version Bump ${{ inputs.tag }} in:title" \
+                    --jq ".[] | [.body] | @csv" \
+                    --json "body")
                 new_body=#✨ releases:[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }})
-                git pr edit $number --body "$new_body $body"
+                git pr edit $number --body "$new_body  $body"
