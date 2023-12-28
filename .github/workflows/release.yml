@@ -75,8 +75,9 @@ jobs:
               id: update-pr
               run: |
                 body=$(gh pr view ${{ inputs.pr }} --json "body" --jq ".[]")
-                gh pr edit ${{ inputs.pr }} \
-                --body "# ✨ releases: [${{ inputs.tag }}](${{ steps.create-release.outputs.release }}$body"
+                pr=$(gh pr edit ${{ inputs.pr }} \
+                --body "# ✨ releases: [${{ inputs.tag }}](${{ steps.create-release.outputs.release }})$body")
+                echo "pr=$pr" >> "$GITHUB_OUTPUT"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
@@ -87,4 +88,4 @@ jobs:
                 # echo "|Upload artifact|\`${{ steps.artifact-upload-step.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
                 echo "|Create artifact to release|\`${{ steps.create-artifact-to-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
                 echo "|Create Release|\`${{ steps.create-release.outcome }}\`| ${{ steps.create-release.outputs.release }} |" >> $GITHUB_STEP_SUMMARY
-                echo "|Update pr|\`${{ steps.update-pr.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
+                echo "|Update pr|\`${{ steps.update-pr.outcome }}\`| ${{ steps.update-pr.outputs.pr }} |" >> $GITHUB_STEP_SUMMARY

@@ -10,7 +10,7 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    build:
+    bump-up:
         name: Bump up
         runs-on: ubuntu-latest
         timeout-minutes: 20
@@ -75,7 +75,7 @@ jobs:
 
     release:
         name: Call release
-        needs: build
+        needs: bump-up
         permissions:
             contents: write
             pull-requests: write
@@ -86,3 +86,11 @@ jobs:
             pr: ${{ needs.build.outputs.pr }}
         secrets:
             token: ${{ secrets.GITHUB_TOKEN }}
+
+    build:
+        name: Call release
+        needs:
+            - bump-up
+            - release
+
+        uses: ./.github/workflows/android.yml
