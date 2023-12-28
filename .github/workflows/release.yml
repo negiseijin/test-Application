@@ -69,21 +69,12 @@ jobs:
             - name: Create release
               id: create-release
               run: gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes
-            - name: Set up body
-              id: body-selector
-              run: |
-                body=$(gh pr view ${{ inputs.pr }} --json "body" --jq ".[]")
-                {
-                    echo <<EOF
-                    echo "body=$body"
-                    echo EOF
-                } >> "$GITHUB_OUTPUT"
-            - name: Set up new body
-              id: new-body-selector
-              run: echo "new-body=$(#✨ releases :[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }}))" >> "$GITHUB_OUTPUT"
             - name: Update pr
               id: update-pr
-              run: gh pr edit ${{ inputs.pr }} --body "${{ steps.new-body-selector.outputs.new-body }}  ${{ steps.body-selector.outputs.body }}"
+              run: |
+                body=$(gh pr view ${{ inputs.pr }} --json "body" --jq ".[]")
+                new-body=$(#✨ releases :[${{ inputs.tag }}](${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag }}))
+                gh pr edit ${{ inputs.pr }} --body "$new-body  $body"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
@@ -94,6 +85,4 @@ jobs:
                 echo "|Upload artifact|\`${{ steps.artifact-upload-step.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
                 echo "|Create artifact to release|\`${{ steps.create-artifact-to-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
                 echo "|Create Release|\`${{ steps.create-release.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
-                echo "|Set up body|\`${{ steps.body-selector.outcome }}\`| ${{ steps.body-selector.outputs.body }} |" >> $GITHUB_STEP_SUMMARY
-                echo "|Set up new body|\`${{ steps.new-body-selector.outcome }}\`| ${{ steps.new-body-selector.outputs.new-body }} |" >> $GITHUB_STEP_SUMMARY
                 echo "|Update pr|\`${{ steps.update-pr.outcome }}\`| |" >> $GITHUB_STEP_SUMMARY
