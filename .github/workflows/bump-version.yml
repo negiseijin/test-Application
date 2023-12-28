@@ -82,13 +82,13 @@ jobs:
 
         uses: ./.github/workflows/release.yml
         with:
-            tag: ${{ needs.build.outputs.tag }}
-            pr: ${{ needs.build.outputs.pr }}
+            tag: ${{ needs.bump-up.outputs.tag }}
+            pr: ${{ needs.bump-up.outputs.pr }}
         secrets:
             token: ${{ secrets.GITHUB_TOKEN }}
 
     build:
-        name: Call release
+        name: Call android
         needs:
             - bump-up
             - release
