@@ -25,6 +25,7 @@ jobs:
 
         outputs:
             tag: ${{ steps.tag-selector.outputs.tag }}
+            pr: ${{ steps.create-pr-selector.outputs.pr }}
 
         steps:
             - uses: actions/checkout@v4
@@ -52,13 +53,15 @@ jobs:
                 version=$(git branch --show-current | sed "s/night-release\///")
                 echo "version=$version" >> "$GITHUB_OUTPUT"
             - name: Create pull request
+              id: create-pr-selector
               env:
                 GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                 tag_name=${{ steps.tag-selector.outputs.tag }}
                 title=${{ steps.version-selector.outputs.version }}
                 body=$(gh api /repos/{owner}/{repo}/releases/generate-notes -f tag_name=$tag_name -f target_commitish=${{ env.BASE_BRANCH }} --jq .body)
-                gh pr create --base ${{ env.BASE_BRANCH }} --title ":up: Version Bump v$title" --body "$body"
+                pr=$(gh pr create --base ${{ env.BASE_BRANCH }} --title ":up: Version Bump v$title" --body "$body")
+                echo "pr=$pr" >> "$GITHUB_OUTPUT"
             - name: Disp step summary
               if: ${{ always() }}
               run: |
@@ -68,6 +71,7 @@ jobs:
                   echo "|------|---------|---------|" >> $GITHUB_STEP_SUMMARY
                   echo "|Get latest tag|\`${{ steps.tag-selector.outcome }}\`|\`${{ steps.tag-selector.outputs.tag }}\`|" >> $GITHUB_STEP_SUMMARY
                   echo "|Set up version|\`${{ steps.version-selector.outcome }}\`|\`${{ steps.version-selector.outputs.version }}\`|" >> $GITHUB_STEP_SUMMARY
+                  echo "|Create pull request|\`${{ steps.create-pr-selector.outcome }}\`|\`${{ steps.create-pr-selector.outputs.pr }}\`|" >> $GITHUB_STEP_SUMMARY
 
     release:
         name: Call release
@@ -79,5 +83,6 @@ jobs:
         uses: ./.github/workflows/release.yml
         with:
             tag: ${{ needs.build.outputs.tag }}
+            pr: ${{ needs.build.outputs.pr }}
         secrets:
             token: ${{ secrets.GITHUB_TOKEN }}
