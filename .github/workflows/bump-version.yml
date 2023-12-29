@@ -5,10 +5,6 @@ on:
         - cron: '0 14 * * *'
     workflow_dispatch:
 
-concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: true
-
 jobs:
     bump-up:
         name: Bump up
@@ -18,7 +14,9 @@ jobs:
             contents: write
             pull-requests: write
             actions: write
-
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}
+            cancel-in-progress: true
         env:
             BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
             BASE_BRANCH: develop
@@ -79,6 +77,9 @@ jobs:
         permissions:
             contents: write
             pull-requests: write
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}
+            cancel-in-progress: true
 
         uses: ./.github/workflows/release.yml
         with:
@@ -90,6 +91,9 @@ jobs:
     build:
         name: Call build
         needs: release
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}
+            cancel-in-progress: true
 
         uses: ./.github/workflows/android.yml
         secrets:
