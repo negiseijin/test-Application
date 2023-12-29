@@ -99,6 +99,7 @@ jobs:
         secrets:
             token: ${{ secrets.GITHUB_TOKEN }}
 
+
     merge:
         name: PR merge
         needs:
@@ -117,7 +118,7 @@ jobs:
             - name: Approve pr
               id: approve-selector
               run: |
-                pr=$(gh pr review ${{ needs.bump-up.outputs.pr }} --approve --comment -b "auto approve")
+                pr=$(gh pr review ${{ needs.bump-up.outputs.pr }} --approve --body "auto approve")
                 echo "pr=$pr" >> "$GITHUB_OUTPUT"
             - name: Auto merge
               id: merge-selector
@@ -131,5 +132,5 @@ jobs:
                 echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
                 echo "| Step | Outcome | Remarks |" >> $GITHUB_STEP_SUMMARY
                 echo "|------|---------|---------|" >> $GITHUB_STEP_SUMMARY
-                echo "|Approve pr|\`${{ steps.approve-selector.outcome }}\`|\`${{ steps.approve-selector.outputs.pr }}\`|" >> $GITHUB_STEP_SUMMARY
-                echo "|Auto merge|\`${{ steps.merge-selector.outcome }}\`|\`${{ steps.merge-selector.outputs.pr }}\`|" >> $GITHUB_STEP_SUMMARY
+                echo "|Approve pr|\`${{ steps.approve-selector.outcome }}\`|${{ steps.approve-selector.outputs.pr }}|" >> $GITHUB_STEP_SUMMARY
+                echo "|Auto merge|\`${{ steps.merge-selector.outcome }}\`|${{ steps.merge-selector.outputs.pr }}|" >> $GITHUB_STEP_SUMMARY
