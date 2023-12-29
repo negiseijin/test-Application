@@ -1,5 +1,9 @@
 name: Bump up version
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 on:
     schedule:
         - cron: '0 14 * * *'
