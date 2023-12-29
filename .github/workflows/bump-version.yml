@@ -76,6 +76,9 @@ jobs:
     release:
         name: Call release
         needs: bump-up
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}
+            cancel-in-progress: true
         permissions:
             contents: write
             pull-requests: write
@@ -89,9 +92,10 @@ jobs:
 
     build:
         name: Call build
-        needs:
-            - bump-up
-            - release
+        needs: release
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}
+            cancel-in-progress: true
 
         uses: ./.github/workflows/android.yml
         secrets:
