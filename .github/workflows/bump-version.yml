@@ -73,8 +73,8 @@ jobs:
                   echo "|Set up version|\`${{ steps.version-selector.outcome }}\`|\`${{ steps.version-selector.outputs.version }}\`|" >> $GITHUB_STEP_SUMMARY
                   echo "|Create pull request|\`${{ steps.create-pr-selector.outcome }}\`| ${{ steps.create-pr-selector.outputs.pr }} |" >> $GITHUB_STEP_SUMMARY
 
-    reusable-release:
-        name: Release
+    release:
+        name: Call release
         needs: bump-up
         permissions:
             contents: write
@@ -87,11 +87,11 @@ jobs:
         secrets:
             token: ${{ secrets.GITHUB_TOKEN }}
 
-    reusable-build:
-        name: Android build
+    build:
+        name: Call build
         needs:
             - bump-up
-            - reusable-release
+            - release
 
         uses: ./.github/workflows/android.yml
         secrets:
