@@ -110,6 +110,7 @@ jobs:
             group: ${{ github.workflow }}-${{ github.ref }}
             cancel-in-progress: true
         permissions:
+            contents: write
             pull-requests: write
         env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
