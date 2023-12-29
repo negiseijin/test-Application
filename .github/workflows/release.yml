@@ -73,7 +73,7 @@ jobs:
             - name: Create release
               id: create-release
               run: |
-                release=$(gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes --draft)
+                release=$(gh release create ${{ inputs.tag }} ${{ github.workspace }}/artifact-${{ inputs.tag }}.tar.gz --generate-notes --prerelease)
                 echo "release=$release" >> "$GITHUB_OUTPUT"
             - name: Update pr
               id: update-pr
