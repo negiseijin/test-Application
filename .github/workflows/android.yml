@@ -34,7 +34,8 @@ jobs:
                 result-encoding: string
                 script: |
                     import * as core from '@actions/core'
-                        await core.summary
+
+                    await core.summary
                         .addHeading('Test Results')
                         .addCodeBlock(generateTestResults(), "js")
                         .addTable([
@@ -45,6 +46,7 @@ jobs:
                             ])
                         .addLink('View staging deployment!', 'https://github.com')
                         .write()
+
                     return "Hello!"
             - name: Get result
               run: echo "${{steps.set-result.outputs.result}}"
