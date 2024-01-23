@@ -34,8 +34,6 @@ jobs:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 result-encoding: string
                 script: |
-                    import * as core from '@actions/core'
-
                     await core.summary
                         .addHeading('Test Results')
                         .addCodeBlock(generateTestResults(), "js")
