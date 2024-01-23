@@ -42,7 +42,7 @@ jobs:
                     await core.summary
                         .addHeading('Test Results')
                         .addTable([tableData])
-                        .addDetails('Details', await core.summary.addTable([tableData]))
+                        .addDetails('Details', await core.summary.addTable([tableData]).write())
                         .addLink('View staging deployment!', 'https://github.com')
                         .write()
 
