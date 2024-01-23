@@ -29,11 +29,20 @@ jobs:
 
         steps:
             - uses: actions/github-script@v7
-              id: set-result
               with:
                 script: |
+                    const tableData = [
+                        {data: 'Header1', header: true},
+                        {data: 'Header2', header: true},
+                        {data: 'Header3', header: true},
+                        {data: 'MyData1'},
+                        {data: 'MyData2'},
+                        {data: 'MyData3'}
+                    ]
                     await core.summary
                         .addHeading('Test Results')
+                        .addTable([tableData])
+                        .addDetails('Details', [tableData])
                         .addLink('View staging deployment!', 'https://github.com')
                         .write()
 
