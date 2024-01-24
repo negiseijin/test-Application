@@ -45,7 +45,7 @@ jobs:
 
                     await core.summary
                         .addHeading('Test Results')
-                        .addRaw(output).write()
+                        .addRaw(output)
                         .addLink('View staging deployment!', 'https://github.com')
                         .write()
 
