@@ -31,24 +31,21 @@ jobs:
             - uses: actions/github-script@v7
               with:
                 script: |
-                    await printObject('github', github)
-                    await printObject('context', context)
-                    await printObject('core', core)
-                    await printObject('glob', glob)
-                    await printObject('io', io)
-                    await printObject('exec', exec)
-                    const tableData = [
-                        {data: 'Header1', header: true},
-                        {data: 'Header2', header: true},
-                        {data: 'Header3', header: true},
-                        {data: 'MyData1'},
-                        {data: 'MyData2'},
-                        {data: 'MyData3'}
-                    ]
+                    const output = `### :rocket: Test summary
+
+                    <details><summary>Show Plan</summary>
+
+                    | Step                          | Result                        |
+                    | ----------------------------- | ----------------------------- |
+                    | step1                         | result1                       |
+                    | step2                         | result2                       |
+                    | step3                         | result3                       |
+
+                    </details>`;
+
                     await core.summary
                         .addHeading('Test Results')
-                        .addTable([tableData])
-                        .addDetails('Details', await core.summary.addTable([tableData]).write())
+                        .addRaw(output).write()
                         .addLink('View staging deployment!', 'https://github.com')
                         .write()
 
