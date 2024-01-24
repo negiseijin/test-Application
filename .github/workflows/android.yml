@@ -47,6 +47,12 @@ jobs:
                         .addHeading('Test Results', '2')
                         .addImage('https://img.shields.io/badge/coverage-100%25-brightgreen', 'coverage')
                         .addRaw(output)
+                        .addTable([
+                          [{data: 'File', header: true}, {data: 'Result', header: true}],
+                          ['foo.js', 'Pass ✅'],
+                          ['bar.js', 'Fail ❌'],
+                          ['test.js', 'Pass ✅']
+                         ])
                         .write()
 
                     core.info('============================== Print JS Objects ==============================')
