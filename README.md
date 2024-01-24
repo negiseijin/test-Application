@@ -13,3 +13,4 @@
 - [Bump version code for Android apps using GitHub Actions](https://www.rockandnull.com/github-actions-android-version/amp/)
 - [GitHub 上で完結する、GitHub Actions + Fastlane をフル活用した iOS の継続的デリバリー](https://techblog.exawizards.com/entry/2021/03/23/115834)
 - [GitHub Actionsのワークフロー内で、gh apiコマンドを活用してPull Requestの本文（リリースノート）を自動生成するTips](https://goodpatch-tech.hatenablog.com/entry/2022/10/12/100000)
+- [Display information about this composite action](https://github.com/pacroy/actions-self-info/blob/2f0e7c496e65a421c20963e1ec4169c10d9ce930/action.yml)
