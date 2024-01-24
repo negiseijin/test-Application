@@ -31,6 +31,12 @@ jobs:
             - uses: actions/github-script@v7
               with:
                 script: |
+                    await printObject('github', github)
+                    await printObject('context', context)
+                    await printObject('core', core)
+                    await printObject('glob', glob)
+                    await printObject('io', io)
+                    await printObject('exec', exec)
                     const tableData = [
                         {data: 'Header1', header: true},
                         {data: 'Header2', header: true},
