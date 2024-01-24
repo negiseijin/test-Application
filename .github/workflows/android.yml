@@ -43,12 +43,10 @@ jobs:
 
                     </details>`;
 
-                    const badge = `![Twitter URL](https://img.shields.io/badge/coverage-100%25-brightgreen)`
-
                     await core.summary
                         .addHeading('Test Results', '2')
                         .addRaw(output)
-                        .addRaw(badge)
+                        .addImage('https://img.shields.io/badge/coverage-100%25-brightgreen', 'coverage')
                         .write()
 
             # - uses: actions/checkout@v4
