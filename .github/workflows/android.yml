@@ -31,7 +31,7 @@ jobs:
             - uses: actions/github-script@v7
               with:
                 script: |
-                    const output = ` ### :rocket: Test summary
+                    const output = `:rocket: Test summary
 
                     <details><summary>Show Plan</summary>
 
@@ -45,8 +45,8 @@ jobs:
 
                     await core.summary
                         .addHeading('Test Results', '2')
-                        .addRaw(output)
                         .addImage('https://img.shields.io/badge/coverage-100%25-brightgreen', 'coverage')
+                        .addRaw(output)
                         .write()
 
             # - uses: actions/checkout@v4
