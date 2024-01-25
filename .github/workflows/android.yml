@@ -57,7 +57,7 @@ jobs:
 
             - name: 'Print md'
               run: |
-                cat https://github.com/negiseijin/test-Application/blob/ea466af5f9ad0360c0d061dc9716d27f2ef1b2f8/README.md >> $GITHUB_STEP_SUMMARY
+                cat https://raw.githubusercontent.com/negiseijin/test-Application/ea466af5f9ad0360c0d061dc9716d27f2ef1b2f8/README.md >> $GITHUB_STEP_SUMMARY
 
             # - uses: actions/checkout@v4
             # - name: Set up JDK 17
