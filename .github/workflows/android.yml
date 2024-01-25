@@ -58,7 +58,8 @@ jobs:
             - name: 'Print Git Info'
               run: |
                summary=$(
-                    cat<<EOF'
+                    cat<<EOF
+                    \`\`\`
 
                     ### Debug
 
@@ -68,6 +69,7 @@ jobs:
                     | step2                         | result2                       |
                     | step3                         | result3                       |
 
+                    \`\`\`
                     EOF)
 
                     echo "${summary}" >> $GITHUB_STEP_SUMMARY
