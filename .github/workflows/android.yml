@@ -58,7 +58,7 @@ jobs:
             - name: 'Print Git Info'
               run: |
                 summary=$(
-                    cat<<EOF
+                    cat << EOF
                     \`\`\`
 
                     ### Debug
