@@ -55,6 +55,19 @@ jobs:
                          ])
                         .write()
 
+            - name: 'Print Git Info'
+              run: |
+               {
+                cat <<EOF
+                ## Git Information
+
+                | Command                  | Value                        |
+                | ------------------------ | ---------------------------- |
+                |\`git rev-parse HEAD\`    | \`$(git rev-parse HEAD)\`    |
+                |\`git describe --always\` | \`$(git describe --always)\` |
+
+                EOF
+                } >> "$GITHUB_STEP_SUMMARY"
 
             # - uses: actions/checkout@v4
             # - name: Set up JDK 17
