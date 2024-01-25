@@ -57,17 +57,18 @@ jobs:
 
             - name: 'Print Git Info'
               run: |
-               {
-                echo 'JSON_RESPONSE<<EOF'
+                {
+                    echo 'JSON_RESPONSE<<EOF'
 
-                ## Git Information
+                    ### Debug
 
-                | Command                  | Value                        |
-                | ------------------------ | ---------------------------- |
-                |\`git rev-parse HEAD\`    | \`$(git rev-parse HEAD)\`    |
-                |\`git describe --always\` | \`$(git describe --always)\` |
+                    | Step                          | Result                        |
+                    | ----------------------------- | ----------------------------- |
+                    | step1                         | result1                       |
+                    | step2                         | result2                       |
+                    | step3                         | result3                       |
 
-                echo EOF
+                    echo EOF
                 } >> "$GITHUB_STEP_SUMMARY"
 
             # - uses: actions/checkout@v4
