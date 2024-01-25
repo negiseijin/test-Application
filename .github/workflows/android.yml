@@ -57,8 +57,8 @@ jobs:
 
             - name: 'Print Git Info'
               run: |
-                {
-                    echo 'JSON_RESPONSE<<EOF'
+               summary=$(
+                    cat<<EOF'
 
                     ### Debug
 
@@ -68,8 +68,9 @@ jobs:
                     | step2                         | result2                       |
                     | step3                         | result3                       |
 
-                    echo EOF
-                } >> "$GITHUB_STEP_SUMMARY"
+                    EOF)
+
+                    echo "${summary}" >> $GITHUB_STEP_SUMMARY
 
             # - uses: actions/checkout@v4
             # - name: Set up JDK 17
