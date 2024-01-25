@@ -55,32 +55,6 @@ jobs:
                          ])
                         .write()
 
-                    core.info('============================== Print JS Objects ==============================')
-                    async function printObject(name, obj) {
-                        const objectString = JSON.stringify(obj, null, 4)
-                        core.info(`::group::${name}`)
-                        core.info(objectString)
-                        core.info('::endgroup::')
-
-                        await core.summary.addRaw(`
-                        <details>
-                        <summary>${name}</summary>
-
-                        \`\`\`json
-                        ${objectString}
-                        \`\`\`
-
-                        </details>
-
-                        `).write()
-                    }
-
-                    await printObject('github', github)
-                    await printObject('context', context)
-                    await printObject('core', core)
-                    await printObject('glob', glob)
-                    await printObject('io', io)
-                    await printObject('exec', exec)
 
             # - uses: actions/checkout@v4
             # - name: Set up JDK 17
