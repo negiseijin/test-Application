@@ -57,23 +57,18 @@ jobs:
 
             - name: 'Print Git Info'
               run: |
+                EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
                 summary=$(
-                    cat << EOF
-                    \`\`\`
-
                     ### Debug
-
                     | Step                          | Result                        |
                     | ----------------------------- | ----------------------------- |
                     | step1                         | result1                       |
                     | step2                         | result2                       |
                     | step3                         | result3                       |
-
-                    \`\`\`
-                    EOF
-                    )
-
-                    echo "${summary}" >> $GITHUB_STEP_SUMMARY
+                )
+                echo "summary<<$EOF" >> $GITHUB_OUTPUT
+                echo "$summary" >> $GITHUB_OUTPUT
+                echo "$EOF" >> $GITHUB_OUTPUT
 
             # - uses: actions/checkout@v4
             # - name: Set up JDK 17
