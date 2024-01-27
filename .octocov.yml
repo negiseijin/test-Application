@@ -1,0 +1,12 @@
+coverage:
+    paths:
+        - /kover/reportDebug.xml
+diff:
+    datastores:
+        - artifact://${GITHUB_REPOSITORY}
+comment:
+    if: is_pull_request
+report:
+    if: is_default_branch
+    datastores:
+        - artifact://${GITHUB_REPOSITORY}
