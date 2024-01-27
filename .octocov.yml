@@ -1,0 +1,22 @@
+coverage:
+    paths:
+        - /kover/reportDebug.xml
+    badge:
+        path: docs/coverage.svg
+codeToTestRatio:
+    badge:
+        path: docs/ratio.svg
+testExecutionTime:
+    badge:
+        path: docs/time.svg
+summary:
+    if: true
+comment:
+    if: is_pull_request
+diff:
+    datastores:
+        - artifact://${GITHUB_REPOSITORY}
+report:
+    if: is_default_branch
+    datastores:
+        - artifact://${GITHUB_REPOSITORY}
