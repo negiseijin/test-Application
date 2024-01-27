@@ -11,10 +11,8 @@ testExecutionTime:
         path: docs/time.svg
 summary:
     if: true
-    hideFooterLink: true
 comment:
     if: is_pull_request
-    hideFooterLink: true
 diff:
     datastores:
         - artifact://${GITHUB_REPOSITORY}
