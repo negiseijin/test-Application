@@ -18,4 +18,5 @@
 - [drawio](https://qiita.com/irongineer/items/23fcd55830ae2de96ca8#aws-%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E6%9C%80%E6%96%B0%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B320230813-%E6%99%82%E7%82%B9)
 
 - [appBar](https://stackoverflow.com/questions/73982907/compose-topappbar-has-no-background-color)
+- [statusbar](https://qiita.com/Nabe1216/items/f99b6996c7c9200d7816)
 -  [card](https://github.com/MohsenMashkour/JetpackLazyVerticalGridExample)
