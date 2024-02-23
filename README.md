@@ -16,3 +16,5 @@
 - [Display information about this composite action](https://github.com/pacroy/actions-self-info/blob/2f0e7c496e65a421c20963e1ec4169c10d9ce930/action.yml)
 - [octocov](https://zenn.dev/shu_illy/articles/b4e635730c5ec0#octocov%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%82%92%E3%81%99%E3%82%8B)
 - [drawio](https://qiita.com/irongineer/items/23fcd55830ae2de96ca8#aws-%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E6%9C%80%E6%96%B0%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B320230813-%E6%99%82%E7%82%B9)
+
+- [appBar](https://stackoverflow.com/questions/73982907/compose-topappbar-has-no-background-color)
