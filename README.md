@@ -19,4 +19,4 @@
 
 - [appBar](https://stackoverflow.com/questions/73982907/compose-topappbar-has-no-background-color)
 - [statusbar](https://qiita.com/Nabe1216/items/f99b6996c7c9200d7816)
--  [card](https://github.com/MohsenMashkour/JetpackLazyVerticalGridExample)
+- [card](https://github.com/MohsenMashkour/JetpackLazyVerticalGridExample)
